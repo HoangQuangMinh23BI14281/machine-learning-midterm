@@ -8,3 +8,8 @@
 |Dang Duc Luong|23BI14273|Group member|
 |Tran Hai Minh|23BI14277|Group member|
 |Pham The Minh Minh|23BI14279|Group member|
+
+> **Note:** Specific roles will be updated soon
+
+## Project targets:
+placeholder
