@@ -1,0 +1,102 @@
+Demographic Information
+Age: Age of the individual in years.
+Gender: Biological sex — usually encoded as Male/Female or 0/1.
+Ethnicity: Ethnic background (e.g., Asian, Caucasian, African, etc.).
+Income: Annual income, possibly in dollars or categorized (Low/Medium/High).
+EducationLevel: Highest level of education attained (e.g., High School, Bachelor, Master).
+Residence: Urban or rural living environment.
+EmploymentStatus: Current job situation (e.g., Employed, Unemployed, Retired).
+MaritalStatus: Relationship status — Single, Married, Divorced, etc.
+
+Health Metrics
+
+
+
+"MAIN THING WE NEED TO FOCUS WHEN USING LINEAR REGRESSION"
+-->Cholesterol: Cholesterol level in the blood, typically measured in mg/dL.
+-->BloodPressure: Blood pressure value (systolic/diastolic or a single number).
+-->HeartRate: Resting heart rate in beats per minute (bpm).
+-->BMI: Body Mass Index — a ratio of weight to height squared.
+
+
+
+
+
+
+Medical Base
+PhysicalActivity: Frequency or intensity of physical exercise (e.g., hours/week or Low/Moderate/High).
+AlcoholConsumption: Level of alcohol intake — possibly units/week or Low/Moderate/High.
+Diet: General dietary habits — e.g., Healthy, Unhealthy, Balanced.
+StressLevel: Perceived stress level, usually on a scale (e.g., 1–10 or Low/Medium/High).
+Smoker: Smoking status — Yes/No or amount smoked.
+Diabetes: Whether the person has diabetes (Yes/No or 0/1).
+Hypertension: High blood pressure status (Yes/No).
+FamilyHistory: History of similar diseases in the family.
+Medication: If the individual is currently taking prescribed medication.
+PreviousHeartAttack: Has the person experienced a heart attack before? (Yes/No).
+StrokeHistory: History of strokes.
+
+
+
+Clinical Tests & Symptoms
+1. ChestPainType
+This describes the nature of the chest pain the patient experiences. It's a key indicator in diagnosing heart disease.
+Typical angina: Classic chest pain due to reduced blood flow to the heart (often caused by exertion, relieved by rest or nitroglycerin).
+Atypical angina: Chest discomfort that doesn't meet all the criteria of typical angina but may still be related to the heart.
+Non-anginal pain: Chest pain not related to heart conditions (e.g., muscular or gastric causes).
+Asymptomatic: No chest pain at all — particularly dangerous, as heart disease can be silent in some people.
+Encoding example: 0 = Typical Angina, 1 = Atypical, 2 = Non-anginal, 3 = Asymptomatic.
+
+2. ECGResults (Resting Electrocardiogram Results)
+An ECG (or EKG) measures the electrical activity of the heart. The result gives clues about heart rhythm, past heart attacks, and current ischemia.
+Common encodings:
+0 = Normal
+1 = ST-T wave abnormality: Indicates mild ischemia (restricted blood flow to the heart muscle).
+2 = Left ventricular hypertrophy: Thickening of the heart’s left ventricle, often due to long-term hypertension.
+Why it matters: These abnormalities suggest structural or electrical problems in the heart — critical for diagnosis.
+
+3. MaxHeartRate (Maximum Heart Rate Achieved)
+Measured during a stress test, usually with exercise (like treadmill walking).
+Formula for estimation: 220 - Age
+Lower-than-expected peak HR may mean poor cardiovascular fitness or a sign of ischemia.
+Higher HRs during stress testing can be normal unless accompanied by symptoms or ECG abnormalities.
+Clinical Insight: A heart that doesn't respond well to exercise may be at risk, even if symptoms aren't visible.
+
+4. ST_Depression (ST Segment Depression Induced by Exercise)
+This measures how much the ST segment drops below the baseline during the stress test (in mm).
+ST segment depression is a strong indicator of myocardial ischemia.
+A depression of >1 mm is often clinically significant.
+It represents a lack of oxygen to the heart muscle during exertion.
+Why it’s important: Combined with chest pain and abnormal ECG, this becomes a key diagnostic marker for CAD.
+
+5. ExerciseInducedAngina
+Indicates whether chest pain occurs during physical exertion (like treadmill exercise test).
+Yes (1): Pain occurred during the test — indicates potential heart problem.
+No (0): No pain during stress — less suspicious but doesn’t rule out heart disease.
+This is a binary symptom and one of the oldest and simplest ways of diagnosing exertion-related heart issues.
+
+6. Slope (of Peak Exercise ST Segment)
+The slope tells how the ST segment changes after exercise. It gives a visual idea of how the heart reacts under stress.
+Upsloping (0): Often considered normal or less worrisome.
+Flat (1): May suggest ischemia (lack of oxygen).
+Downsloping (2): Strong indicator of significant myocardial ischemia.
+A flat or downsloping ST segment with exercise is very suspicious for CAD.
+
+7. NumberOfMajorVessels (0–3) Colored by Fluoroscopy
+This is a result from coronary angiography, where a dye is injected and visualized under X-rays (fluoroscopy) to check for blocked arteries.
+The number indicates how many major coronary vessels show blockage or abnormalities.
+Range: 0 (no vessels affected) to 3 (three major vessels affected).
+The higher the number, the higher the risk of serious coronary disease.
+
+8. Thalassemia
+A genetic blood disorder affecting hemoglobin levels — impacts oxygen transport in the blood.
+Typical encodings:
+1 = Normal
+2 = Fixed Defect: Suggests permanent damage to part of the heart.
+3 = Reversible Defect: Suggests that damage appears during stress but not at rest — indicating ischemia.
+In context of a nuclear stress test, "fixed defect" might imply a prior heart attack, and "reversible defect" indicates ischemia that may still be treated.
+
+
+Target Variable
+Outcome: The target or label — whether the individual has a disease or not (0/1 or Yes/No).
+
