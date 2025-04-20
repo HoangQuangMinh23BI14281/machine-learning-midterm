@@ -13,7 +13,7 @@
 
 ## Project targets:
 
-| (ONLY USED "PANDAS", "NUMPY" AND "MATHPLOT"; DONT USED SCIKIT-LEARN) |
+| (ONLY USED "PANDAS", "NUMPY", "STEAMLIT" AND "MATHPLOT"; DONT USED SCIKIT-LEARN) |
 
 The main things of this:
 1. Take a look through "explain.txt" on the data folder to understand the input
