@@ -16,7 +16,7 @@
 The main things of this:
 1. Take a look through "explain.txt" on the data folder to understand the input
 
-2. Implementation process: <span style="color:red">(ONLY USED "PANDAS", "NUMPY" AND "MATHPLOT"; DONT USED SCIKIT-LEARN)<span>
+2. Implementation process: <span style="color:red">(ONLY USED "PANDAS", "NUMPY" AND "MATHPLOT"; DONT USED SCIKIT-LEARN)</span>
 
 - Step 1: Data preprocessing
     + Encoding: String data columns (such as gender, ethnicity, employment status) will be encoded into numeric values ​​so that the model can process them.
