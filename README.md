@@ -60,6 +60,7 @@ The main things of this:
 - Streamlit: Using Streamlit to build a simple user interface for web applications that makes it easy for users to enter data and get prediction results.
 
 Here is the project structure:
+<pre>
 project/
 ├── data/
 │   ├── heart_attack_data.csv (data_frame we gonna use)
@@ -81,3 +82,4 @@ project/
 ├── .gitignore
 ├── LICENSE
 ├── README.md
+<pre>
