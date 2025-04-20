@@ -21,7 +21,7 @@ def encode(data_frame):
 def standardize(data_frame):
     df = data_frame.copy()
     numerical_cols = df.select_dtypes(include=[np.number]).columns.tolist()
-
+    numerical_cols = [col for col in numerical_cols if col != 'Outcome'] # Exclude the 'Outcome' column from standardization
     stats = {}
 
     for col in numerical_cols:
@@ -52,15 +52,50 @@ def full_preprocess(data_frame):
     df_standardized, stats = standardize(df_encoded)
     return df_standardized, stats
 
+# Inverse standardization function to convert standardized values back to original values (no need to use for ann beacause it uses sigmoid function)
+def inverse_standardize(df, stats, columns=None):
 
+    df = df.copy()  
+    if columns is None:  
+        columns = df.columns.tolist()
+
+    for col in columns:
+        if col in stats:  
+            mean = stats[col]['mean']
+            std = stats[col]['std']
+            if std != 0:  
+                df[col] = df[col] * std + mean # Inverse standardization formula
+            else:
+                df[col] = mean  # Avoid division by zero
+
+    return df
 
 # Split the dataset into training and testing sets
+
 def train_test_split(X, y, test_size=0.2, seed=42):
     np.random.seed(seed)
-    indices = np.arange(X.shape[0])
-    np.random.shuffle(indices)
+    
+    # Check if X is a DataFrame or a numpy array
+    if isinstance(X, np.ndarray):
+        indices = np.random.permutation(len(X))  # Generate random indices
+    elif isinstance(X, pd.DataFrame):  # X is a pandas DataFrame
+        indices = np.random.permutation(X.shape[0])  # Get random indices for DataFrame rows
+    else:
+        raise TypeError("X must be either a numpy array or a pandas DataFrame")
 
-    split_idx = int(X.shape[0] * (1 - test_size))
+    split_idx = int(len(X) * (1 - test_size))  # Index for splitting
     train_idx, test_idx = indices[:split_idx], indices[split_idx:]
 
-    return X[train_idx], X[test_idx], y[train_idx], y[test_idx]
+    # Return train/test data based on indices
+    if isinstance(X, np.ndarray):
+        X_train, X_test = X[train_idx], X[test_idx]  # For numpy array
+    elif isinstance(X, pd.DataFrame):
+        X_train, X_test = X.iloc[train_idx], X.iloc[test_idx]  # For pandas DataFrame
+
+    # For y (target variable), assuming y is a pandas Series or numpy array
+    if isinstance(y, np.ndarray):
+        y_train, y_test = y[train_idx], y[test_idx]
+    elif isinstance(y, pd.Series):
+        y_train, y_test = y.iloc[train_idx], y.iloc[test_idx]
+
+    return X_train, X_test, y_train, y_test
