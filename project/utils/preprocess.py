@@ -72,8 +72,8 @@ def inverse_standardize(df, stats, columns=None):
 
 # Split the dataset into training and testing sets
 
-def train_test_split(X, y, test_size=0.2, seed=42):
-    np.random.seed(seed)
+def train_test_split(X, y, test_size=0.2, seed=50):
+    np.random.seed(seed) # Set random seed for reproducibility
     
     # Check if X is a DataFrame or a numpy array
     if isinstance(X, np.ndarray):
@@ -99,3 +99,37 @@ def train_test_split(X, y, test_size=0.2, seed=42):
         y_train, y_test = y.iloc[train_idx], y.iloc[test_idx]
 
     return X_train, X_test, y_train, y_test
+
+def load_data(data_path):
+    data = pd.read_csv(data_path)
+    data, stats = full_preprocess(data)
+    features = [
+        'Age', 'Gender', 'Cholesterol', 'BloodPressure', 'HeartRate', 'BMI', 'Smoker',
+        'Diabetes', 'Hypertension', 'FamilyHistory', 'PhysicalActivity', 'AlcoholConsumption',
+        'Diet', 'StressLevel', 'Ethnicity', 'Income', 'EducationLevel', 'Medication',
+        'ChestPainType', 'ECGResults', 'MaxHeartRate', 'ST_Depression', 'ExerciseInducedAngina',
+        'Slope', 'NumberOfMajorVessels', 'Thalassemia', 'PreviousHeartAttack', 'StrokeHistory',
+        'Residence', 'EmploymentStatus', 'MaritalStatus'
+    ]
+    targets = ['Cholesterol', 'BloodPressure', 'HeartRate', 'BMI', 'Outcome']
+    X = data[features]
+    y = {}
+    for target in targets:
+        y[target] = data[target]
+    return X, y, features, stats
+
+
+
+
+# Explaining the code:
+# 1. **encode**: This function encodes categorical columns into numerical values. It identifies columns with a limited number of unique values and converts them to category type, then encodes them as numbers.
+# 2. **standardize**: This function standardizes numerical columns by subtracting the mean and dividing by the standard deviation. It also stores the mean and standard deviation for each column in a dictionary called `stats`.
+# 3. **standardize_with_stats**: This function standardizes a DataFrame using pre-computed statistics (mean and standard deviation) from the training set. It avoids division by zero by checking if the standard deviation is not zero.
+# 4. **full_preprocess**: This function combines the encoding and standardization steps. It first encodes the DataFrame and then standardizes it, returning both the standardized DataFrame and the statistics.
+# 5. **inverse_standardize**: This function reverses the standardization process, converting standardized values back to their original values using the stored statistics. It allows for selective inverse standardization of specified columns.
+# 6. **train_test_split**: This function splits the dataset into training and testing sets based on a specified test size. It uses random indices to ensure that the split is random and reproducible by setting a seed.
+    # why is need to use for both numpy array and pandas DataFrame? Because the input data can be in either format, this function handles both cases to ensure flexibility in data handling.
+    # It also checks the type of `X` and `y` to ensure they are either numpy arrays or pandas DataFrames/Series, raising a TypeError if not.
+    # If not, it can loss the column name and index of the data frame, which is important for data analysis and model training.
+    # A NumPy array requires uniform data types (e.g., all floats), which complicates preprocessing
+# 7. **load_data**: This function loads the dataset from a CSV file, preprocesses it (encoding and standardization), and separates the features and target variables. It returns the preprocessed features, target variables, feature names, and statistics.
