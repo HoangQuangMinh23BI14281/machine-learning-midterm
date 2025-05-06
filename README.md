@@ -15,51 +15,90 @@
 
 | (ONLY USED "PANDAS", "NUMPY", "STEAMLIT" AND "MATHPLOT"; DONT USED SCIKIT-LEARN) |
 
-The main things of this:
-1. Take a look through "explain.txt" on the data folder to understand the input
+Health Prediction System
+This project uses machine learning to predict health-related features and their long-term evolution, focusing on heart attack risk.
+Features
 
-2. Implementation process: 
+Part 1: ANN for Feature Prediction:
+An Artificial Neural Network (ANN) predicts all 31 features based on a subset of user-provided inputs. As more inputs are provided, predictions are refined.
+Uses gradient descent with backpropagation, L1 and L2 regularization.
 
-- Step 1: Data preprocessing
-    + Encoding: String data columns (such as gender, ethnicity, employment status) will be encoded into numeric values ​​so that the model can process them.
+Part 2: Linear Regression for Lifetime Risk Trajectory:
+A Linear Regression model predicts the 100-year trajectory of all features based on the ANN-predicted inputs.
+Simulates changes in specified features (Income, EducationLevel, Residence, EmploymentStatus, MaritalStatus, PhysicalActivity, AlcoholConsumption, Diet, Smoker, Medication) at random years and tracks their impact on all features.
+Uses gradient descent with L1 and L2 regularization.
 
-    + Standardization: Numerical data such as cholesterol, blood pressure, BMI will be standardized to ensure that the values ​​have the same range and units.
+Part 3: Logistic Regression for Risk and Feature Change Analysis:
+A Logistic Regression model calculates the percentage change in heart attack probability at each simulated change point in the trajectory.
+Also computes percentage changes for Cholesterol, BloodPressure, BMI, HeartRate, and StressLevel at the same change points.
+Uses gradient descent with L1 and L2 regularization.
 
-    + Handling missing values: Missing values ​​in the data will be handled using methods such as filling in the average value, simulating, or removing rows/columns with serious missing data.
+Dynamic Regularization:
+Regularization parameters (lambda_l1, lambda_l2) are tuned dynamically using cross-validation for all models.
 
-- Step 2: Building a Predictive Model
-    
-    + Linear Regression Model: To predict indicators such as Cholesterol, Blood Pressure, Heart Rate, BMI. 
+Preprocessing:
+Outlier handling using the IQR method to clip extreme values.
+Cross-validation for hyperparameter tuning.
 
-    + Logistic Regression Model: To predict the likelihood of having a heart attack (cardiovascular disease). This is a classification problem with two classes: "Yes" and "No". 
+Visualization:
+Trajectories of all 31 features over 100 years, grouped into categories (Demographic, Lifestyle, Medical History, Clinical Tests, Symptoms & Diagnostics).
+ROC curve to evaluate the Logistic Regression model's performance.
 
-    + Deep Learning Model (ANN): An Artificial Neural Network can be used to combine all the factors and generate more accurate predictions.
+Setup
 
-- Step 3: Prediction and Evaluation
-    
-    + Cholesterol, BloodPressure, HeartRate, BMI Prediction: The model will predict these indicators within a reasonable range of values ​​based on user input.
+Install dependencies:
+pip install streamlit pandas numpy matplotlib
 
-    + Heart Attack Risk Prediction: Based on medical and lifestyle factors, the model will indicate the probability that the user has cardiovascular disease or is at risk of having a heart attack.
+Train models (run once):
+<pre>python train.py<pre>
 
-- Step 4: Diet and Lifestyle Recommendations
+Run app:
+<pre>streamlit run main.py<pre>
 
-    + Dietary Recommendations: Based on indicators such as Cholesterol, BloodPressure, BMI, Diabetes, the model can make suggestions for appropriate diets (e.g., less salt, less sugar, more fruits and vegetables, etc.).
+Usage
 
-    + Physical Activity Recommendations: If the user has a high BMI or is less physically active, the model can suggest light exercises such as walking or yoga.
+Step 1: Predict Remaining Features:
+Enter one or more features (e.g., Age, Gender, Smoker).
+The ANN predicts the remaining features, updating predictions as you provide more inputs.
 
-    + Risk Warnings: If the user has multiple risk factors (such as smoking, high blood pressure, high cholesterol, etc.), the model will give warnings and encourage them to change their lifestyle or see a doctor.
+Step 2: 100-Year Lifetime Risk Trajectory:
+View the 100-year trajectory of all 31 features, grouped into categories.
+The app simulates changes in specified features at random years and displays their impact on the trajectories.
 
-- Step 5: “What-If” feature
-    + Users can try changing certain lifestyle factors (diet, physical activity level, smoking, etc.) and see how the model re-predicts their health indicators and risk of heart attack after changing these factors. 
+Step 3: Risk and Feature Change Analysis:
+View the percentage change in Heart Attack Probability, Cholesterol, BloodPressure, BMI, HeartRate, and StressLevel at each simulated change point in the trajectory.
+Evaluate the Logistic Regression model's performance with an ROC curve.
+
+Model Performance:
+ROC Curve: A plot showing the ROC curve with an AUC (e.g., 0.85), a diagonal line for reference, and labels for FPR and TPR.
+
+Considerations
+
+Trajectory Visualization:
+Features are grouped into categories to make the 100-year trajectories more manageable and interpretable.
+Each plot includes change points marked with vertical dashed lines for clarity.
+
+Risk and Feature Change Analysis:
+Percentage changes are computed for Heart Attack Probability, Cholesterol, BloodPressure, BMI, HeartRate, and StressLevel at each simulated change point.
+These changes help understand the impact of simulated interventions on both risk and health metrics.
+
+ROC Curve:
+The ROC curve is computed using the test set, providing a static evaluation of the Logistic Regression model’s performance.
+The AUC value gives users a sense of the model’s reliability (e.g., AUC > 0.8 indicates good performance).
+
+Dynamic Regularization:
+Regularization parameters are tuned using cross-validation, which improves model generalization but increases training time.
+
+Performance:
+The app remains responsive with real-time updates.
+Dynamic regularization and cross-validation may slow down the training process; consider reducing the parameter grid or number of folds if performance is a concern.
 
 
-3. Technology and Tools Used
-
-- Machine Learning: Algorithms such as Linear Regression, Logistic Regression, and ANN (Artificial Neural Networks) will be used to build predictive models.
-
-- Data Preprocessing: Using tools and libraries such as Pandas, NumPy to preprocess data, remove missing data, and normalize metrics.
-
-- Streamlit: Using Streamlit to build a simple user interface for web applications that makes it easy for users to enter data and get prediction results.
+Limitations:
+For informational purposes only, not medical advice.
+Model accuracy depends on dataset quality.
+The 100-year trajectory is a simplified projection and does not account for complex real-world factors.
+Training time may increase due to dynamic regularization and cross-validation.
 
 Here is the project structure:
 <pre>

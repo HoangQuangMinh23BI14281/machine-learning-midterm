@@ -31,6 +31,7 @@ StressLevel: Perceived stress level, usually on a scale (e.g., 1–10 or Low/Med
 Smoker: Smoking status — Yes/No or amount smoked.
 Diabetes: Whether the person has diabetes (Yes/No or 0/1).
 Hypertension: High blood pressure status (Yes/No).
+
 FamilyHistory: History of similar diseases in the family.
 Medication: If the individual is currently taking prescribed medication.
 PreviousHeartAttack: Has the person experienced a heart attack before? (Yes/No).

@@ -28,3 +28,6 @@ class LinearRegression:
     def predict(self, X):
         X_b = np.c_[np.ones((X.shape[0], 1)), X]
         return X_b.dot(self.weight)
+
+
+#not into IQR anymore, but into z-score
