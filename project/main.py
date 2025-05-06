@@ -5,7 +5,7 @@ import numpy as np
 
 
 
-data_frame = pd.read_csv('data/heart_attack_dataset.csv')
+data_frame = pd.read_csv('./project/data/heart_attack_dataset.csv') # Load the dataset, change the path if needed
 #print(data_frame)
 categorical_cols = []
 for col in data_frame.columns:
@@ -26,7 +26,7 @@ data_after_preprocess, stats = preprocess.full_preprocess(data_frame)
 #print(X)
 #print(y)
 
-X, y, features, stats = preprocess.load_data('data/heart_attack_dataset.csv')
+X, y, features, stats = preprocess.load_data('./project/data/heart_attack_dataset.csv') # Load the dataset, change the path if needed
 #print(X)
 #print(y)
 #print(features)
