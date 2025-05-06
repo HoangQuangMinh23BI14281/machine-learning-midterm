@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-
+from utils.evaluate import rmse, accuracy
 # Encode columns with "object" data type into numbers
 
 def encode(data_frame):

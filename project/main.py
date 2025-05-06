@@ -10,21 +10,8 @@ data_frame = pd.read_csv('data/heart_attack_dataset.csv')
 categorical_cols = []
 for col in data_frame.columns:
     unique_values = data_frame[col].nunique()
-    print(f"{col}, Unique Values: {unique_values}")
-print(data_frame.dtypes)
-# Preprocess the data
-data_after_preprocess, stats = preprocess.full_preprocess(data_frame)
-#print(data_after_preprocess)
-#print(stats)
-#columns_to_inverse = ['Age', 'BMI'] change the None to the columns you want to inverse standardize
-#data_after_invere_standardize = preprocess.inverse_standardize(data_after_preprocess, stats,None)
-#print(data_after_invere_standardize)
-
-#X = data_after_preprocess.drop(columns=['Outcome']) # Drop the 'Outcome' column from the DataFrame
-#y = data_after_preprocess['Outcome']
- 
-#print(X)
-#print(y)
+    #print(f"{col}, Unique Values: {unique_values}")
+#print(data_frame.dtypes)
 
 X, y, features, stats = preprocess.load_data('data/heart_attack_dataset.csv')
 #print(X)
