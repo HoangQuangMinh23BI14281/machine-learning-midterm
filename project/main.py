@@ -1,17 +1,15 @@
 from utils import preprocess, evaluate
-from models import logistic, ann
+from models import linear, logistic, ann
 import pandas as pd
 import numpy as np
-
-
 
 data_frame = pd.read_csv('./project/data/heart_attack_dataset.csv') # Load the dataset, change the path if needed
 #print(data_frame)
 categorical_cols = []
 for col in data_frame.columns:
     unique_values = data_frame[col].nunique()
-    #print(f"{col}, Unique Values: {unique_values}")
-#print(data_frame.dtypes)
+    print(f"{col}, Unique Values: {unique_values}")
+print(data_frame.dtypes)
 
 X, y, features, stats = preprocess.load_data('./project/data/heart_attack_dataset.csv') # Load the dataset, change the path if needed
 #print(X)
