@@ -3,6 +3,7 @@ import pandas as pd
 
 from utils import load_data, load_models, standardize_with_stats, train_test_split, inverse_standardize
 from utils.evaluate import accuracy, precision, recall, f1_score, log_loss, mae, mse, r2_score
+from colorama import init, Fore, Back, Style #Úsing 
 
 def run_model():
     # Load data and models
@@ -147,15 +148,25 @@ def run_model():
             else:  # Xử lý các giá trị số
                 pred_df[feature] = pred_df[feature].apply(lambda x: int(round(x)) if isinstance(x, (float, int)) else x)
 
-    # In kết quả cho đầu vào người dùng và các tính năng dự đoán
-    print("User Inputs and Predicted Features:")
-    for feature in required_features + predict_features:
-        if feature in required_features:
+    # Import colorama for colored terminal output
+    init(autoreset=True)  # Initialize colorama
+
+    # ------------------ USER INPUTS AND PREDICTIONS ------------------
+    print(f"\n{Fore.CYAN}{Style.BRIGHT}{'='*80}")
+    print(f"{Fore.CYAN}{Style.BRIGHT}                       USER INPUTS AND PREDICTED FEATURES")
+    print(f"{Fore.CYAN}{Style.BRIGHT}{'='*80}")
+    
+    print(f"\n{Fore.GREEN}{Style.BRIGHT}USER INPUTS:")
+    for feature in required_features:
+        if feature in input_original.columns:
             value = input_original[feature].iloc[0]
-            print(f"{feature}: {value} (User Input)")
-        elif feature in predict_features:
+            print(f"{Fore.WHITE}{feature}: {Fore.YELLOW}{value}")
+    
+    print(f"\n{Fore.MAGENTA}{Style.BRIGHT}PREDICTED FEATURES:")
+    for feature in predict_features:
+        if feature in pred_df.columns:
             value = pred_df[feature].iloc[0]
-            print(f"{feature}: {value} (Predicted)")
+            print(f"{Fore.WHITE}{feature}: {Fore.YELLOW}{value}")
 
     user_inputs.update({
         'Cholesterol': 220, 
@@ -178,14 +189,15 @@ def run_model():
 
     # Compute heart attack probability
     initial_prob = models['Logistic'].predict_proba(X_input)[0]
-    print(f"Heart Attack Probability: {initial_prob*100:.2f}%")  # Probability of positive class
+    print(f"\n{Fore.RED}{Style.BRIGHT}HEART ATTACK PROBABILITY: {Fore.WHITE}{initial_prob*100:.2f}%")
 
-    # Step 2: Model Evaluation
-    print("Model Evaluation:")
+    # ------------------ MODEL EVALUATION ------------------
+    print(f"\n\n{Fore.CYAN}{Style.BRIGHT}{'='*80}")
+    print(f"{Fore.CYAN}{Style.BRIGHT}                            MODEL EVALUATION")
+    print(f"{Fore.CYAN}{Style.BRIGHT}{'='*80}")
+    
     # Logistic Regression evaluation with inverse standardization
-    # Inverse standardize test data
     X_test_logistic_original = inverse_standardize(pd.DataFrame(X_test_logistic.values, columns=logistic_features), stats)
-    # Standardize back for prediction (since model expects standardized input)
     X_test_logistic_std = standardize_with_stats(X_test_logistic_original, stats)
 
     logit_pred_proba = models['Logistic'].predict_proba(X_test_logistic_std.values)
@@ -196,12 +208,12 @@ def run_model():
     logit_f1 = f1_score(y_test_outcome.values, logit_predictions)
     logit_log_loss = log_loss(y_test_outcome.values, logit_pred_proba)
 
-    print("Logistic Regression Evaluation Metrics (with inverse standardization):")
-    print(f"Accuracy: {logit_accuracy:.4f}")
-    print(f"Precision: {logit_precision:.4f}")
-    print(f"Recall: {logit_recall:.4f}")
-    print(f"F1-Score: {logit_f1:.4f}")
-    print(f"Log Loss: {logit_log_loss:.4f}")
+    print(f"\n{Fore.BLUE}{Style.BRIGHT}LOGISTIC REGRESSION METRICS:")
+    print(f"{Fore.WHITE}Accuracy:  {Fore.GREEN}{logit_accuracy:.4f}")
+    print(f"{Fore.WHITE}Precision: {Fore.GREEN}{logit_precision:.4f}")
+    print(f"{Fore.WHITE}Recall:    {Fore.GREEN}{logit_recall:.4f}")
+    print(f"{Fore.WHITE}F1-Score:  {Fore.GREEN}{logit_f1:.4f}")
+    print(f"{Fore.WHITE}Log Loss:  {Fore.GREEN}{logit_log_loss:.4f}")
 
     # Linear Regression evaluation with inverse standardization
     linear_predictions = models['Trajectory'].predict(X_test_linear.values)
@@ -221,10 +233,11 @@ def run_model():
     linear_r2 = r2_score(actual_original['Cholesterol'].values, pred_original['Cholesterol'].values)
 
     # Print results
-    print("\nLinear Regression Evaluation (with inverse standardization):")
-    print(f"MAE: {linear_mae:.4f}")
-    print(f"MSE: {linear_mse:.4f}")
-    print(f"R² Score: {linear_r2:.4f}")
+    print(f"\n{Fore.BLUE}{Style.BRIGHT}LINEAR REGRESSION METRICS:")
+    print(f"{Fore.WHITE}MAE:      {Fore.GREEN}{linear_mae:.4f}")
+    print(f"{Fore.WHITE}MSE:      {Fore.GREEN}{linear_mse:.4f}")
+    print(f"{Fore.WHITE}R² Score: {Fore.GREEN}{linear_r2:.4f}")
+    
 
 # MAIN function with simple streamlit UI
 def main():
