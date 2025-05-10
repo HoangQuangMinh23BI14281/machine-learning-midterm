@@ -46,40 +46,6 @@ Cross-validation for hyperparameter tuning.
 Trajectories of all 31 features over 100 years, grouped into categories (Demographic, Lifestyle, Medical History, Clinical Tests, Symptoms & Diagnostics).
 ROC curve to evaluate the Logistic Regression model's performance.
 
-### Setup
-
-**Install dependencies:**
-
-```bash
-pip install streamlit pandas numpy matplotlib
-```
-
-**Train models (run once):**
-
-```bash
-python train.py
-```
-
-**Run app:**
-
-```bash
-streamlit run main.py
-```
-
-### Usage
-
-*Step 1: Predict Remaining Features:*
-Enter one or more features (e.g., Age, Gender, Smoker).
-The ANN predicts the remaining features, updating predictions as you provide more inputs.
-
-*Step 2: 100-Year Lifetime Risk Trajectory:*
-View the 100-year trajectory of all 31 features, grouped into categories.
-The app simulates changes in specified features at random years and displays their impact on the trajectories.
-
-*Step 3: Risk and Feature Change Analysis:*
-View the percentage change in Heart Attack Probability, Cholesterol, BloodPressure, BMI, HeartRate, and StressLevel at each simulated change point in the trajectory.
-Evaluate the Logistic Regression model's performance with an ROC curve.
-
 ### Model Performance
 
 ROC Curve: A plot showing the ROC curve with an AUC (e.g., 0.85), a diagonal line for reference, and labels for FPR and TPR.
@@ -117,13 +83,16 @@ Model accuracy depends on dataset quality.
 The 100-year trajectory is a simplified projection and does not account for complex real-world factors.
 Training time may increase due to dynamic regularization and cross-validation.
 
-#### Here is the project structure
+### Project structure
 
-```text
+```makefile
 project/
 ├── data/
 │   ├── heart_attack_data.csv (data_frame we gonna use)
-|   ├── explain.txt (explain the meaning of each input)
+│   ├── explain.txt (explain the meaning of each input)
+│   ├── linear_weight.npy (Trained data for weights of linear regression model)
+│   ├── logistic_weight.npy (Trained data for weights of logistic regression model)
+│
 ├── models/
 │   ├── __pycache__/
 │   ├── __init__.py (to mark a directory as a Python package)
@@ -142,3 +111,40 @@ project/
 ├── LICENSE
 ├── README.md
 ```
+
+### Setup
+
+**Install dependencies:**
+
+```bash
+pip install streamlit pandas numpy matplotlib
+```
+
+**Train models (run once):**
+
+```bash
+python train.py
+```
+
+The models will be placed in the `./project/data/` directory as `linear_weight.npy` and `logistic_weight.npy`.
+**Run app:**
+
+```bash
+streamlit run main.py
+```
+
+### Usage
+
+*Step 1: Predict Remaining Features:*
+Enter one or more features (e.g., Age, Gender, Smoker).
+The ANN predicts the remaining features, updating predictions as you provide more inputs.
+
+*Step 2: 100-Year Lifetime Risk Trajectory:*
+View the 100-year trajectory of all 31 features, grouped into categories.
+The app simulates changes in specified features at random years and displays their impact on the trajectories.
+
+*Step 3: Risk and Feature Change Analysis:*
+View the percentage change in Heart Attack Probability, Cholesterol, BloodPressure, BMI, HeartRate, and StressLevel at each simulated change point in the trajectory.
+Evaluate the Logistic Regression model's performance with an ROC curve.
+
+### Output
