@@ -126,7 +126,7 @@ pip install streamlit pandas numpy matplotlib
 python train.py
 ```
 
-To train specific models, apply Arguments: `-linear` or `-logistic` to the command.
+To train specific models, you can comment out the code for the model you don't want to train.
 The models will be placed in the `./project/data/` directory as `linear_weight.npy` and `logistic_weight.npy`.
 **Run app:**
 

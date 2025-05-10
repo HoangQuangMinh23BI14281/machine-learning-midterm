@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-import streamlit as st
+
 from utils import load_data, load_models, standardize_with_stats, train_test_split, inverse_standardize
 from utils.evaluate import accuracy, precision, recall, f1_score, log_loss, mae, mse, r2_score
 
@@ -228,30 +228,9 @@ def run_model():
 
 # MAIN function with simple streamlit UI
 def main():
-    st.title("Heart Attack Risk Prediction System")
-    
-    st.write("Loading data and models...")
-    st.write("Predicting clinical tests and symptoms...")
-    
-    
-    
-    # Run the model, the most important line, output to terminal
+
     run_model()
     
-    # Complete the progress bar
-    
-    
-    # Show completion message
-    st.success("Prediction is complete! Please check terminal.")
-    
-    # Add a note about what to look for in terminal
-    st.info("""
-    The terminal output includes:
-    1. User inputs and predicted symptoms
-    2. Heart attack probability
-    3. Model evaluation metrics
-    """)
 
-    st.info("To stop the program please press `Ctrl + C` in the terminal.")
 if __name__ == "__main__":
     main()
