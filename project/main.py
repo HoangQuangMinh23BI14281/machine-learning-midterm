@@ -4,7 +4,7 @@ from utils import load_data, load_models, standardize_with_stats, train_test_spl
 from utils.evaluate import accuracy, precision, recall, f1_score, log_loss, mae, mse, r2_score
 
 # Load data and models
-X_linear, y_linear, X_logistic, y_logistic, linear_features, logistic_features, stats = load_data('./project/data/heart_disease_data3.csv')
+X_linear, y_linear, X_logistic, y_logistic, linear_features, logistic_features, stats = load_data('./project/data/heart_disease_data4.csv')
 
 # Split data for Logistic Regression model
 X_train_logistic, X_test_logistic, y_train_outcome, y_test_outcome = train_test_split(X_logistic[logistic_features], y_logistic['Outcome'], test_size=0.2, seed=50)
@@ -43,7 +43,7 @@ predict_features = feature_groups["Clinical Tests"] + feature_groups["Symptoms &
 integer_features = ['Age', 'StressLevel', 'PhysicalActivity', 'AlcoholConsumption', 'NumberOfMajorVessels']
 decimal_features = ['Cholesterol', 'BloodPressure', 'HeartRate', 'BMI', 'MaxHeartRate', 'ST_Depression', 'Income']
 # Load raw data to compute default values
-data_raw = pd.read_csv('./project/data/heart_attack_dataset.csv')
+data_raw = pd.read_csv('./project/data/heart_disease_data4.csv')
 default_values = {}
 for feature in required_features + predict_features:
     if feature in ['Age', 'Income', 'StressLevel', 'MaxHeartRate', 'ST_Depression', 'NumberOfMajorVessels', 'Cholesterol', 'BloodPressure', 'HeartRate', 'BMI']:

@@ -7,7 +7,7 @@ LINEAR_REG_PARAMS = {
 
 LOGISTIC_REG_PARAMS = {
     'learning_rate': 0.1,
-    'max_iter': 3000,
-    'lambda_l1': 0.01,
+    'max_iter': 5000,
+    'lambda_l1': 0.1,
     'lambda_l2': 0.1,
 }
