@@ -4,7 +4,7 @@ from utils import load_data, load_models, standardize_with_stats, train_test_spl
 
 def train():
     # Load data
-    X_linear, y_linear, X_logistic, y_logistic, linear_features, logistic_features, stats = load_data('./project/data/heart_attack_dataset.csv')
+    X_linear, y_linear, X_logistic, y_logistic, linear_features, logistic_features, stats = load_data('./project/data/heart_disease_data3.csv')
     
     # Define feature groups
     feature_groups = {
