@@ -1,5 +1,7 @@
 # ignoring trained data files , we train ourself
 project/data/*.npy
+#iGNoring TEST folder, if you want to either Improve model accurancy or experiment without touching  the file
+test/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
