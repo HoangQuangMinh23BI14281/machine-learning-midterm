@@ -126,12 +126,15 @@ pip install streamlit pandas numpy matplotlib
 python train.py
 ```
 
+To train specific models, apply Arguments: `-linear` or `-logistic` to the command.
 The models will be placed in the `./project/data/` directory as `linear_weight.npy` and `logistic_weight.npy`.
 **Run app:**
 
 ```bash
 streamlit run main.py
 ```
+
+To stop the program, press `Ctrl + C` in the terminal.
 
 ### Usage
 
@@ -148,3 +151,47 @@ View the percentage change in Heart Attack Probability, Cholesterol, BloodPressu
 Evaluate the Logistic Regression model's performance with an ROC curve.
 
 ### Output
+
+#### User inputs
+
+The code will automatically enter inputs from `main.py` including:
+
+- Age(19)
+- Gender(Male)
+- Ethnicity(Asian)
+- Income(975000)
+- EducationLevel(College)
+- Residence(Urban)
+- EmploymentStatus(Employed)
+- MaritalStatus(Single)
+- Smoker(No)
+- PhysicalActivity(0)
+- AlcoholConsumption(0)
+- Diet(Unhealthy)
+- StressLevel(6.0)
+- Diabetes(Yes)
+- Hypertension(Yes)
+- FamilyHistory(Yes)
+- Medication(No)
+- PreviousHeartAttack(Yes)
+- StrokeHistory(Yes)
+
+#### Prediction
+
+- Cholesterol
+- BloodPressure
+- BMI
+- MaxheartRate
+- ST_depression
+- ChestPainType
+- ECGResults
+- ExerciseInducedAngina
+- Slope
+- Thallassmia
+
+And will calculate the Heart Attack Probability based on the predicted features and user inputs.
+
+#### Model Evaluation
+
+- For the Logistic Regression model, the code will calculate the following: Accuracy, Precision, Recall, F1 Score, and Log Loss.
+- For the Linear Regression model, the code will calculate the following: Mean Absolute Error, Mean Squared Error, Root Mean Squared Error, and R2 Score.
