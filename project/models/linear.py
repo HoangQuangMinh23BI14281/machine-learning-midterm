@@ -1,13 +1,14 @@
 import numpy as np
 
 class LinearRegression:
-    def __init__(self, lambda_l1=1.0, lambda_l2=1.0, learning_rate=0.01, max_iter=1000):
+    def __init__(self, lambda_l1, lambda_l2, learning_rate, max_iter):
         self.weights = None
         self.var = None
         self.lambda_l1 = lambda_l1
         self.lambda_l2 = lambda_l2
         self.learning_rate = learning_rate
         self.max_iter = max_iter
+        self.cost_history = []
 
     def cost_function(self, X, y, weight):
         m = len(y)
@@ -21,53 +22,70 @@ class LinearRegression:
         m = len(y)
         prediction = X.dot(weight)
         grad = (1 / m) * (X.T.dot(prediction - y))
-        l1_grad = (self.lambda_l1 / m) * np.concatenate(([0], np.sign(weight[1:])))
-        l2_grad = (self.lambda_l2 / m) * np.concatenate(([0], weight[1:]))
+        l1_grad = np.zeros_like(weight)
+        l1_grad[1:] = (self.lambda_l1 / m) * np.sign(weight[1:])
+        l2_grad = np.zeros_like(weight)
+        l2_grad[1:] = (self.lambda_l2 / m) * weight[1:]
         return grad + l1_grad + l2_grad
 
     def fit(self, X, y):
-        X_bias = np.c_[np.ones(X.shape[0]), X]
+        if X.shape[1] != 19:
+            raise ValueError(f"Expected 19 features, got {X.shape[1]}")
+        
+        X_bias = np.c_[np.ones(X.shape[0]), X]  # (n_samples, 20)
         n_samples, n_features = X_bias.shape
-        self.weights = np.zeros((n_features, y.shape[1]))  # Multi-output regression
 
-        for _ in range(self.max_iter):
+        if y.ndim == 1:
+            y = y.reshape(-1, 1)
+
+        # Initialize weights with small random values instead of zeros
+        self.weights = np.random.randn(n_features, y.shape[1]) * 0.01
+
+        prev_cost = float('inf')
+        patience = 50  # Number of iterations to wait for improvement
+        patience_counter = 0
+        best_weights = self.weights.copy()
+        best_cost = float('inf')
+
+        for i in range(self.max_iter):
             grad = self.gradient(X_bias, y, self.weights)
             self.weights -= self.learning_rate * grad
-
-        # Compute variance of residuals for prediction intervals
+            
+            # Calculate cost
+            cost = self.cost_function(X_bias, y, self.weights)
+            self.cost_history.append(cost)
+            
+            # Early stopping with patience
+            if cost < best_cost:
+                best_cost = cost
+                best_weights = self.weights.copy()
+                patience_counter = 0
+            else:
+                patience_counter += 1
+                
+            if patience_counter >= patience:
+                print(f"\nEarly stopping at iteration {i}")
+                self.weights = best_weights
+                break
         y_pred = self.predict(X)
         residuals = y - y_pred
         self.var = np.var(residuals, axis=0)
 
-    def predict_trajectory(self, X_initial, years=100, change_params=None, change_years=None):
-        """
-        Predict the 100-year trajectory of all features.
-        X_initial: Initial feature vector (1 sample, all features)
-        change_params: Dict of {feature_idx: new_value} to change at specific years
-        change_years: List of years when changes occur
-        """
-        trajectory = np.zeros((years, X_initial.shape[1]))
-        X_current = X_initial.copy()
-        
-        # Assume a simple linear trend: predict future values as a perturbation
-        for t in range(years):
-            # Predict next year's values
-            X_next = self.predict(X_current)
-            trajectory[t] = X_next
-            
-            # Apply changes if specified
-            if change_params and change_years and t in change_years:
-                for feature_idx, new_value in change_params.items():
-                    X_next[0, feature_idx] = new_value
-            
-            X_current = X_next
-        
-        return trajectory
+    def load_weights(self, filepath):
+        weights = np.load(filepath, allow_pickle=True)
+        if not isinstance(weights, np.ndarray):
+            weights = np.array(weights, dtype=float)
 
-    def predict_interval(self, X, confidence=0.95):
-        y_pred = self.predict(X)
-        z = 1.96  # For 95% confidence
-        se = np.sqrt(self.var)
-        lower = y_pred - z * se
-        upper = y_pred + z * se
-        return lower, upper
+        if weights.shape != (20, 12):
+            raise ValueError(f"Expected weights shape (20, 12), but got {weights.shape}")
+
+        self.weights = weights
+
+    def predict(self, X):
+        if X.shape[1] != 19:
+            raise ValueError(f"Expected 19 input features, got {X.shape[1]}")
+        if self.weights is None:
+            raise ValueError("Model weights are not initialized. Please call fit() or load_weights() first.")
+        X_bias = np.c_[np.ones(X.shape[0]), X]
+        return X_bias.dot(self.weights)
+

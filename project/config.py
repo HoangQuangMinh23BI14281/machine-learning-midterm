@@ -1,17 +1,13 @@
-# Model parameters
-LOGISTIC_REGRESSION_PARAMS = {
-    'learning_rate': 0.01,
-    'n_iterations': 1000
+LINEAR_REG_PARAMS = {
+    'lambda_l1': 0.001,
+    'lambda_l2': 0.01,
+    'learning_rate': 0.05,
+    'max_iter': 5000
 }
 
-NEURAL_NETWORK_PARAMS = {
-    'hidden_size': 32,
-    'learning_rate': 0.01
+LOGISTIC_REG_PARAMS = {
+    'learning_rate': 0.1,
+    'max_iter': 3000,
+    'lambda_l1': 0.01,
+    'lambda_l2': 0.1,
 }
-
-# Data settings
-TEST_SIZE = 0.2
-RANDOM_SEED = 42
-
-# Target column name
-TARGET_COLUMN = 'Outcome'  # Updated to match the actual column name in the dataset
