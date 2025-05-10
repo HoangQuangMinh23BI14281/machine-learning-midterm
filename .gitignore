@@ -1,3 +1,5 @@
+# ignoring trained data files , we train ourself
+project/data/*.npy
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -172,3 +174,4 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
