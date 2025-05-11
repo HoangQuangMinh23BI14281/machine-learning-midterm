@@ -14,53 +14,124 @@
 
 Library usages: `PANDAS`, `NUMPY`, `STREAMLIT`
 
-This project uses machine learning to predict health-related features and their long-term evolution, focusing on heart attack risk.
+Our project is a machine learning system, with the purpose of predicting heart attack risks. We use a custom built model and a dataset.
+
+Focus:
+
+- Predicting clinical indicators
+- Estimate risks of the heart attack based on input features
+- Evaluating performance of the model
 
 ## Project Features
 
-### Part 1: Linear Regression for Lifetime Risk Trajectory
+## Part 1: Input features
 
-A Linear Regression model predicts the 100-year trajectory of all features based on the ANN-predicted inputs.
-Simulates changes in specified features (Income, EducationLevel, Residence, EmploymentStatus, MaritalStatus, PhysicalActivity, AlcoholConsumption, Diet, Smoker, Medication) at random years and tracks their impact on all features.
-Uses gradient descent with L1 and L2 regularization.
+- The system use 19 input features to predict heart attack:
+  - Age
+  - Gender
+  - Ethnicity
+  - Income
+  - EducationLevel
+  - Residence
+  - EmploymentStatus
+  - MaritalStatus
+  - Smoker
+  - PhysicalActivity
+  - AlcoholConsumption
+  - Diet
+  - StressLevel
+  - Diabetes
+  - Hypertension
+  - FamilyHistory
+  - Medication
+  - PreviousHeartAttack
+  - StrokeHistory
 
-### Part 2: Logistic Regression for Risk and Feature Change Analysis
+### Part 2: Linear Regression
 
-A Logistic Regression model calculates the percentage change in heart attack probability at each simulated change point in the trajectory.
-Also computes percentage changes for Cholesterol, BloodPressure, BMI, HeartRate, and StressLevel at the same change points.
-Uses gradient descent with L1 and L2 regularization.
+Our linear regression model predicts the following clinical indicators:
 
-**Dynamic Regularization:**
-Regularization parameters (lambda_l1, lambda_l2) are tuned dynamically using cross-validation for all models.
+- Predict 12 Clinical features:
+  - Cholesterol
+  - BloodPressure
+  - BMI
+  - MaxheartRate
+  - ST_depression
+  - ChestPainType
+  - ECGResults
+  - ExerciseInducedAngina
+  - Slope
+  - Thalassemia
+- Implement : Gradient Decent with L1 and L2 regularization to control complexity
+- Support both L1 and L2 regularization with early stopping
+  - L1:Lasso regression helps to driving weights to zero
+  - L2:Ridge regression helps to prevent large coefficients
+- Track cost history
+- Use random initialization
+- Use Numpy
 
-**Preprocessing:**
-Outlier handling using the IQR method to clip extreme values.
-Cross-validation for hyperparameter tuning.
+### Part 3: Logistic Regression
 
-**Visualization:**
-Trajectories of all 31 features over 100 years, grouped into categories (Demographic, Lifestyle, Medical History, Clinical Tests, Symptoms & Diagnostics).
-ROC curve to evaluate the Logistic Regression model's performance.
+Our Logistic regression calculate heart attack probability based on the following features:
 
-### Part 3: Evaluation
+- Process all features to predict heart attack risks
+- Use sigmoid function, batch gradient descent function
+- Implement L1 and L2 regularization to control complexity
+  - L1:Lasso regression helps to enforce sparsity and feature selection
+  - L2:Ridge regression helps  with weight shrinkage and stability
+- Use Numpy
 
-Evaluation of both models using metrics such as accuracy, precision, recall, F1 score, and log loss for the Logistic Regression model.
+### Part 4: Evaluation
 
-## Quick overview for all files
+We implement a model evaluation to assess prediction quality and performance. The evaluation includes:
 
-- `main.py`: Main file to run the Streamlit app.
-- `train.py`: File to train the models.
-- `config.py`: Configuration file for the project.
-- `models/linear.py`: Linear regression model.
-- `models/logistic.py`: Logistic regression model.
-- `utils/evaluate.py`: Evaluation metrics for the models.
-- `utils/preprocess.py`: Preprocessing functions for the data.
+- For the Logistic Regression model:
+  - Accuracy: Measure the proportion of correct predictions to the total predictions made.
+  - Precision: Evaluate model's ability to avoid false positives.
+  - Recall: Assess the model to find all positive cases
+  - F1 Score: Harmonic mean of precision and recall, providing a balance between the two.
+  - Log Loss: Evaluate the uncertanty of predictions
+- For the Linear Regression model:
+  - Mean Absolute Error(MAE): Average of absolute differences between predicted and actual values.
+  - Mean Squared Error(MSE): Average of squared differences between predicted and actual values.
+  - Root Mean Squared Error(RMSE): Square root of MSE, providing error measures
+  - R2 Score: Measure of how well the model fits the data.
+
+## File descriptions
+
+- `main.py`: The main file to load pre-trained models, and run the prediction. Also responsible for loading user inputs, running predictions, and displaying results.
+- `train.py`: Training script to load data, initialize models with configured parameters, splits training, testing data, fits models then save the trained data to `data/` directory.
+- `config.py`: Configuration files containing parameters for both models: Learning rate, maximum iterations, regularization parameters `l1` and `l2`
+
+- `models/linear.py`: Linear regression model containing
+  - Gradient descent optimization
+  - Cost function
+  - `l1` and `l2` regularization
+  - Weight management
+  - Prediction function
+- `models/logistic.py`: Logistic regression model containing
+  - Sigmoid function
+  - Cost function
+  - `l1` and `l2` regularization
+  - Weight management
+  - Probabilistic output
+- `utils/evaluate.py`: Evaluation metrics for the models:
+  - Logistic regression: Accuracy, Precision, Recall, F1 Score, Log Loss
+  - Linear regression: Mean Absolute Error, Mean Squared Error, Root Mean Squared Error, R2 Score
+- `utils/preprocess.py`: Preprocessing functions for the data:
+  - Feature encoding,standardization
+  - Handling missing values
+  - Outlier detection
+  - Train splitting function
+  - Data loading function, transformation utilities
+- `__init__.py`: Package initialization files, having key functions from utils modules.
 
 ## Project structure
 
 ```makefile
 project/
 ├── data/
-│   ├── heart_attack_data.csv (data_frame we gonna use)
+│   ├── heart_disease_data.csv (data_frame we gonna use)
 │   ├── explain.txt (explain the meaning of each input)
 │   ├── linear_weight.npy (Trained data for weights of linear regression model)
 │   ├── logistic_weight.npy (Trained data for weights of logistic regression model)
@@ -84,12 +155,32 @@ project/
 ├── README.md
 ```
 
+## Implementation
+
+### Data preprocessing
+
+- Feature encoding: Categorical variables are encoded to numerical values
+- Standardization: Features are scaled to have a mean of 0 and a unit variance
+- Outlier handling: IQR method to improve stability
+
+### Model training
+
+- Gradient decent: Implemented with configurable rates
+- Regularization: L1 and L2 regularization to control model complexity and better generalization
+- Early stopping to prevent overfitting
+
+### Evaluation
+
+- Cross validation: Use for hyperparamenter tuning, model selection
+- Metrics tracking: Capture different aspects of the performance
+- Standardized reporting: Use for easy interpretation
+
 ## Running code
 
 **Install dependencies:**
 
 ```bash
-pip install streamlit pandas numpy matplotlib
+pip install streamlit pandas numpy matplotlib colorama
 ```
 
 **Train models (run once):**
@@ -98,9 +189,8 @@ pip install streamlit pandas numpy matplotlib
 python train.py
 ```
 
-To train specific models, you can comment out the code for the model you don't want to train.
 The models will be placed in the `./project/data/` directory as `linear_weight.npy` and `logistic_weight.npy`.
-**Run app:**
+**Run application:**
 
 ```bash
 streamlit run main.py
@@ -108,48 +198,10 @@ streamlit run main.py
 
 To stop the program, press `Ctrl + C` in the terminal.
 
-### Output
+## Usage
 
-#### User inputs
-
-The code will automatically enter inputs from `main.py` including:
-
-- Age(19)
-- Gender(Male)
-- Ethnicity(Asian)
-- Income(975000)
-- EducationLevel(College)
-- Residence(Urban)
-- EmploymentStatus(Employed)
-- MaritalStatus(Single)
-- Smoker(No)
-- PhysicalActivity(0)
-- AlcoholConsumption(0)
-- Diet(Unhealthy)
-- StressLevel(6.0)
-- Diabetes(Yes)
-- Hypertension(Yes)
-- FamilyHistory(Yes)
-- Medication(No)
-- PreviousHeartAttack(Yes)
-- StrokeHistory(Yes)
-
-#### Prediction
-
-- Cholesterol
-- BloodPressure
-- BMI
-- MaxheartRate
-- ST_depression
-- ChestPainType
-- ECGResults
-- ExerciseInducedAngina
-- Slope
-- Thallassmia
-
-And will calculate the Heart Attack Probability based on the predicted features and user inputs.
-
-#### Model Evaluation
-
-- For the Logistic Regression model, the code will calculate the following: Accuracy, Precision, Recall, F1 Score, and Log Loss.
-- For the Linear Regression model, the code will calculate the following: Mean Absolute Error, Mean Squared Error, Root Mean Squared Error, and R2 Score.
+- The application will load the pre-trained models, and the dataset
+- User input are provided automatically and can be customized
+- The Linear regression model will predict the clinical indicators
+- The Logistic regression model will predict the heart attack risks
+- The evaluation metrics will be displayed for both models
