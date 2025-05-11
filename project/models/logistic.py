@@ -7,6 +7,7 @@ class LogisticRegression:
         self.lambda_l1 = lambda_l1
         self.lambda_l2 = lambda_l2
         self.weights = None
+        self.cost_history = []  # Added to track cost history
 
     def sigmoid(self, z):
         # Prevent overflow by clipping z
@@ -37,13 +38,44 @@ class LogisticRegression:
     def fit(self, X, y):
         # Add bias term (column of ones)
         X_bias = np.c_[np.ones(X.shape[0]), X]  # Shape: (n_samples, n_features + 1)
+        
         # Initialize weights if not already set
         if self.weights is None:
-            self.weights = np.zeros(X_bias.shape[1])  # Set weights to zero if not initialized
-        # Gradient descent
-        for _ in range(self.max_iter):
+            # Initialize with small random values instead of zeros for better convergence
+            self.weights = np.random.randn(X_bias.shape[1]) * 0.01
+        
+        # Variables for early stopping
+        best_cost = float('inf')
+        best_weights = self.weights.copy()
+        patience = 50  # Number of iterations to wait for improvement
+        patience_counter = 0
+        
+        # Gradient descent with early stopping
+        for i in range(self.max_iter):
             grad = self.gradient(X_bias, y, self.weights)
             self.weights -= self.learning_rate * grad
+            
+            # Calculate and store cost
+            cost = self.cost_function(X_bias, y, self.weights)
+            self.cost_history.append(cost)
+            
+            # Early stopping logic
+            if cost < best_cost:
+                best_cost = cost
+                best_weights = self.weights.copy()
+                patience_counter = 0
+            else:
+                patience_counter += 1
+                            
+            # Check if we should stop early
+            if patience_counter >= patience:
+                print(f"Early stopping at iteration {i}")
+                self.weights = best_weights
+                break
+                
+        # Ensure we use the best weights found
+        self.weights = best_weights
+        
 
     def load_weights(self, filepath):
         # Load weights from a file
@@ -59,5 +91,3 @@ class LogisticRegression:
         # Predict binary class labels (0 or 1)
         probs = self.predict_proba(X)
         return (probs >= 0.5).astype(int)
-    
-    

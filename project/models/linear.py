@@ -66,6 +66,7 @@ class LinearRegression:
                 patience_counter += 1
                 
             if patience_counter >= patience:
+                print(f"Early stopping at iteration {i}")
                 self.weights = best_weights
                 break
         y_pred = self.predict(X)

@@ -12,7 +12,7 @@
 
 ## Project overview
 
-Library usages: `PANDAS`, `NUMPY`,
+Library usages: `PANDAS`, `NUMPY`
 
 Our project is a machine learning system, with the purpose of predicting heart attack risks. We use a custom built model and a dataset.
 
