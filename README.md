@@ -12,7 +12,7 @@
 
 ## Project overview
 
-Library usages: `PANDAS`, `NUMPY`, `STREAMLIT`
+Library usages: `PANDAS`, `NUMPY`,
 
 Our project is a machine learning system, with the purpose of predicting heart attack risks. We use a custom built model and a dataset.
 
@@ -94,7 +94,6 @@ We implement a model evaluation to assess prediction quality and performance. Th
 - For the Linear Regression model:
   - Mean Absolute Error(MAE): Average of absolute differences between predicted and actual values.
   - Mean Squared Error(MSE): Average of squared differences between predicted and actual values.
-  - Root Mean Squared Error(RMSE): Square root of MSE, providing error measures
   - R2 Score: Measure of how well the model fits the data.
 
 ## File descriptions
@@ -120,8 +119,6 @@ We implement a model evaluation to assess prediction quality and performance. Th
   - Linear regression: Mean Absolute Error, Mean Squared Error, Root Mean Squared Error, R2 Score
 - `utils/preprocess.py`: Preprocessing functions for the data:
   - Feature encoding,standardization
-  - Handling missing values
-  - Outlier detection
   - Train splitting function
   - Data loading function, transformation utilities
 - `__init__.py`: Package initialization files, having key functions from utils modules.
@@ -161,7 +158,6 @@ project/
 
 - Feature encoding: Categorical variables are encoded to numerical values
 - Standardization: Features are scaled to have a mean of 0 and a unit variance
-- Outlier handling: IQR method to improve stability
 
 ### Model training
 
@@ -180,7 +176,7 @@ project/
 **Install dependencies:**
 
 ```bash
-pip install streamlit pandas numpy matplotlib colorama
+pip install pandas numpy matplotlib 
 ```
 
 **Train models (run once):**
@@ -193,7 +189,7 @@ The models will be placed in the `./project/data/` directory as `linear_weight.n
 **Run application:**
 
 ```bash
-streamlit run main.py
+python main.py
 ```
 
 To stop the program, press `Ctrl + C` in the terminal.

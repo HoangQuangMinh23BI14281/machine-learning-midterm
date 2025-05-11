@@ -59,3 +59,5 @@ class LogisticRegression:
         # Predict binary class labels (0 or 1)
         probs = self.predict_proba(X)
         return (probs >= 0.5).astype(int)
+    
+    

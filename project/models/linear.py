@@ -31,6 +31,7 @@ class LinearRegression:
     def fit(self, X, y):
         if X.shape[1] != 19:
             raise ValueError(f"Expected 19 features, got {X.shape[1]}")
+
         
         X_bias = np.c_[np.ones(X.shape[0]), X]  # (n_samples, 20)
         n_samples, n_features = X_bias.shape
@@ -41,6 +42,7 @@ class LinearRegression:
         # Initialize weights with small random values instead of zeros
         self.weights = np.random.randn(n_features, y.shape[1]) * 0.01
 
+        # Print target statistics
         prev_cost = float('inf')
         patience = 50  # Number of iterations to wait for improvement
         patience_counter = 0
@@ -64,7 +66,6 @@ class LinearRegression:
                 patience_counter += 1
                 
             if patience_counter >= patience:
-                print(f"\nEarly stopping at iteration {i}")
                 self.weights = best_weights
                 break
         y_pred = self.predict(X)

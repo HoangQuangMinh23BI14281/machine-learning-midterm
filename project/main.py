@@ -110,7 +110,6 @@ def run_model():
 
     # Convert user inputs to DataFrame
     input_df = pd.DataFrame([user_inputs], columns=required_features)
-
     # Standardize input
     input_std = standardize_with_stats(input_df, stats)
     X_input = input_std.values
@@ -126,7 +125,7 @@ def run_model():
     pred_df = inverse_standardize(pred_df, stats)
 
     # Hàm để tra cứu giá trị trong feature_mappings với kiểm tra khớp
-    def map_feature_value(feature, value):
+    def map_feature_value(feature, value): 
         # Làm tròn giá trị thành số nguyên cho các cột phân loại
         value = round(value)  # Làm tròn giá trị
         value = int(value)  # Đảm bảo là int
