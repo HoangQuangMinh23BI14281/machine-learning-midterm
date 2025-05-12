@@ -69,7 +69,6 @@ class LogisticRegression:
                             
             # Check if we should stop early
             if patience_counter >= patience:
-                print(f"Early stopping at iteration {i}")
                 self.weights = best_weights
                 break
                 

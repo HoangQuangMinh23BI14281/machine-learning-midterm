@@ -87,7 +87,7 @@ def run_model():
     # Simulate user inputs (use correct feature set based on what we need)
     user_inputs = {feature: default_values[feature] for feature in required_features}
     user_inputs.update({
-        'Age': 19,
+        'Age': 70,
         'Gender': feature_mappings['Gender']['Male'],
         'Ethnicity': feature_mappings['Ethnicity']['Asian'],
         'Income': 97500.0,
@@ -176,7 +176,7 @@ def run_model():
         'BMI': 25.0,  
         'MaxHeartRate': 180,  
         'ST_Depression': 1.2,  
-        'NumberOfMajorVessels': 3,  
+        'NumberOfMajorVessels': 0,  
         'ChestPainType': feature_mappings['ChestPainType']['Atypical'], 
         'ECGResults': feature_mappings['ECGResults']['Normal'],  
         'ExerciseInducedAngina': feature_mappings['ExerciseInducedAngina']['No'],  
