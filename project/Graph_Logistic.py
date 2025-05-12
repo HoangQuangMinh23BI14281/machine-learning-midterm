@@ -100,80 +100,41 @@ def create_logistic_regression_graphs():
         print(f"Metrics - Acc: {acc:.4f}, Prec: {prec:.4f}, Rec: {rec:.4f}, F1: {f1:.4f}")
         
         # Create figure with 4 subplots
-        fig, axes = plt.subplots(2, 2, figsize=(15, 12))
+        fig, axes = plt.subplots(1, 2, figsize=(20, 12))
         
         # 1. Confusion Matrix
         cm = custom_confusion_matrix(actual_outcome, y_pred)
-        axes[0, 0].imshow(cm, cmap='Blues')
-        axes[0, 0].set_title(f'Confusion Matrix\nAccuracy: {acc:.4f}')
+        axes[0].imshow(cm, cmap='Blues')
+        axes[0].set_title(f'Confusion Matrix\nAccuracy: {acc:.4f}')
         
         # Add text labels
         for i in range(2):
             for j in range(2):
-                axes[0, 0].text(j, i, str(cm[i, j]), 
+                axes[0].text(j, i, str(cm[i, j]), 
                                ha='center', va='center',
                                color='white' if cm[i, j] > cm.max()/2 else 'black')
         
-        axes[0, 0].set_xticks([0, 1])
-        axes[0, 0].set_yticks([0, 1])
-        axes[0, 0].set_xticklabels(['Negative (0)', 'Positive (1)'])
-        axes[0, 0].set_yticklabels(['Negative (0)', 'Positive (1)'])
-        axes[0, 0].set_xlabel('Predicted')
-        axes[0, 0].set_ylabel('Actual')
+        axes[0].set_xticks([0, 1])
+        axes[0].set_yticks([0, 1])
+        axes[0].set_xticklabels(['Negative (0)', 'Positive (1)'])
+        axes[0].set_yticklabels(['Negative (0)', 'Positive (1)'])
+        axes[0].set_xlabel('Predicted')
+        axes[0].set_ylabel('Actual')
         
         # 2. ROC Curve
         fpr, tpr = custom_roc_curve(actual_outcome, y_prob)
         roc_auc = custom_auc(fpr, tpr)
         
-        axes[0, 1].plot(fpr, tpr, color='darkorange', lw=2, 
+        axes[1].plot(fpr, tpr, color='darkorange', lw=2, 
                       label=f'ROC (AUC = {roc_auc:.2f})')
-        axes[0, 1].plot([0, 1], [0, 1], 'k--', lw=2)
-        axes[0, 1].set_xlim([0.0, 1.0])
-        axes[0, 1].set_ylim([0.0, 1.05])
-        axes[0, 1].set_xlabel('False Positive Rate')
-        axes[0, 1].set_ylabel('True Positive Rate')
-        axes[0, 1].set_title('ROC Curve')
-        axes[0, 1].legend(loc='lower right')
-        axes[0, 1].grid(True, alpha=0.3)
-        
-        # 3. Sigmoid Function Visualization
-        x_range = np.linspace(-5, 5, 100)
-        y_sigmoid = 1 / (1 + np.exp(-x_range))
-        
-        axes[1, 0].plot(x_range, y_sigmoid, 'b-', lw=2)
-        axes[1, 0].set_title('Sigmoid (Logistic) Function')
-        axes[1, 0].set_xlabel('Input (z)')
-        axes[1, 0].set_ylabel('Probability P(y=1)')
-        axes[1, 0].axhline(y=0.5, color='r', linestyle='--', alpha=0.3)
-        axes[1, 0].axvline(x=0, color='g', linestyle='--', alpha=0.3)
-        axes[1, 0].grid(True, alpha=0.3)
-        axes[1, 0].set_ylim([-0.05, 1.05])
-        
-        # 4. Actual vs Predicted (simple version without sorting)
-        # Just use the index directly
-        x_indices = np.arange(len(actual_outcome))
-        
-        # Plot actual values
-        axes[1, 1].scatter(x_indices, actual_outcome, color='blue', label='Actual', 
-                         alpha=0.7, s=50)
-        
-        # Plot predicted probabilities
-        axes[1, 1].scatter(x_indices, y_prob, color='red', label='Predicted Prob', 
-                         alpha=0.5, s=50)
-        
-        # Add threshold line
-        axes[1, 1].axhline(y=0.5, color='green', linestyle='--', 
-                         label='Decision Threshold')
-        
-        axes[1, 1].set_xlabel('Sample Index')
-        axes[1, 1].set_ylabel('Class / Probability')
-        axes[1, 1].set_title('Actual vs. Predicted Probabilities')
-        axes[1, 1].grid(True, alpha=0.3)
-        axes[1, 1].legend()
-        
-        plt.tight_layout()
-        plt.suptitle('Logistic Regression Evaluation', fontsize=16, y=0.98)
-        fig.subplots_adjust(top=0.92)
+        axes[1].plot([0, 1], [0, 1], 'k--', lw=2)
+        axes[1].set_xlim([0.0, 1.0])
+        axes[1].set_ylim([0.0, 1.05])
+        axes[1].set_xlabel('False Positive Rate')
+        axes[1].set_ylabel('True Positive Rate')
+        axes[1].set_title('ROC Curve')
+        axes[1].legend(loc='lower right')
+        axes[1].grid(True, alpha=0.3)
         
         # Display plots without saving
         print("Displaying graphs (close window to continue)...")
