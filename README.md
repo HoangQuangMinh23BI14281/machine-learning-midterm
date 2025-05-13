@@ -136,13 +136,12 @@ project/
 ├── models/
 │   ├── __pycache__/
 │   ├── __init__.py (to mark a directory as a Python package)
-│   ├── ann.py (Artificial Neural Network)
 │   ├── linear.py (linear regression)
 │   ├── logistic.py (logistic regression)
 ├── utils/
 │   ├── __pycache__/
 │   ├── __init__.py
-│   ├── evaluate.py (using to plot the graph)
+│   ├── evaluate.py (using for evaluation model)
 │   ├── preprocess.py (using to encode the data_frame)
 │   ├── config.py (Separate the configuration part from the main code for easy management, maintenance and updating.)
 ├── main.py
