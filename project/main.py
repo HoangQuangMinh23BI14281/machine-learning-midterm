@@ -47,19 +47,17 @@ def run_model():
     # Required features for demographic, lifestyle, medical history, and predictive features
     required_features = feature_groups["Demographic"] + feature_groups["Lifestyle"] + feature_groups["Medical History"]
     predict_features = feature_groups["Clinical Tests"] + feature_groups["Symptoms & Diagnostics"]
-    integer_features = ['Age', 'StressLevel', 'PhysicalActivity', 'AlcoholConsumption', 'NumberOfMajorVessels']
-    decimal_features = ['Cholesterol', 'BloodPressure', 'HeartRate', 'BMI', 'MaxHeartRate', 'ST_Depression', 'Income']
     
     # Load raw data to compute default values
     data_raw = pd.read_csv('./project/data/heart_disease_data.csv')
     default_values = {}
     for feature in required_features + predict_features:
         if feature in ['Age', 'Income', 'StressLevel', 'MaxHeartRate', 'ST_Depression', 'NumberOfMajorVessels', 'Cholesterol', 'BloodPressure', 'HeartRate', 'BMI']:
-            default_values[feature] = data_raw[feature].median()
+            default_values[feature] = data_raw[feature].median() # dùng giá trị trung vị cho các biến số liên tục
         else:
-            default_values[feature] = data_raw[feature].mode()[0] if not data_raw[feature].mode().empty else 0
+            default_values[feature] = data_raw[feature].mode()[0] if not data_raw[feature].mode().empty else 0 # dùng giá trị mode aka các biết xuất hiện nhiều nhất cho các biến phân loại
 
-    # Mapping for categorical features (unchanged)
+    # Mapping for categorical features 
     feature_mappings = {
         'Gender': {'Male': 1, 'Female': 0},
         'Diet': {'Unhealthy': 0, 'Healthy': 1, 'Moderate': 2},
@@ -118,7 +116,7 @@ def run_model():
     print(f"{Fore.CYAN}{Style.BRIGHT}Predicting clinical tests and symptoms...")
     X_pred = models['Trajectory'].predict(X_input)
     if X_pred.ndim == 1:
-        X_pred = X_pred.reshape(1, -1)
+        X_pred = X_pred.reshape(1, -1) # Ensure it's 2D tránh lỗi khi chỉ có 1 dòng dữ liệu or khi tạo dataframe
     pred_df = pd.DataFrame(X_pred, columns=predict_features)
     # Inverse standardize
     input_original = inverse_standardize(pd.DataFrame(input_std.values, columns=required_features), stats)
@@ -140,17 +138,19 @@ def run_model():
                 return 'Unknown'
         return value
 
+
+    #Giải mã lại dữ liệu đầu vào
     for feature in feature_mappings:
         if feature in input_original.columns:
-            input_original[feature] = input_original[feature].apply(lambda x: map_feature_value(feature, x))
+            input_original[feature] = input_original[feature].apply(lambda x: map_feature_value(feature, x)) #một hàm ẩn danh (lambda) nhận x là từng giá trị trong cột, và gọi hàm map_feature_value
 
     # Cập nhật các giá trị cho các cột phân loại
     for feature in required_features + predict_features:
         if feature in pred_df.columns:
             if feature in feature_mappings:  # Xử lý các giá trị dạng chữ
-                pred_df[feature] = pred_df[feature].apply(lambda x: map_feature_value(feature, x))
+                pred_df[feature] = pred_df[feature].apply(lambda x: map_feature_value(feature, x)) #nễu là chữ thì gọi hàm map_feature_value
             else:  # Xử lý các giá trị số
-                pred_df[feature] = pred_df[feature].apply(lambda x: int(round(x)) if isinstance(x, (float, int)) else x)
+                pred_df[feature] = pred_df[feature].apply(lambda x: int(round(x)) if isinstance(x, (float, int)) else x) # Làm tròn giá trị thành số nguyên
 
     # ------------------ USER INPUTS AND PREDICTIONS ------------------
     print(f"\n{Fore.CYAN}{Style.BRIGHT}{'='*80}")

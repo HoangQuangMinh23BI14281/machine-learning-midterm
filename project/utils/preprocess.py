@@ -3,7 +3,8 @@ import numpy as np
 from models import LinearRegression, LogisticRegression
 from config import LINEAR_REG_PARAMS, LOGISTIC_REG_PARAMS
 
-def encode(data_frame):
+# Function to encode categorical variables
+def encode(data_frame): 
     df = data_frame.copy()
     categorical_cols = []
     for col in df.columns:
@@ -15,7 +16,8 @@ def encode(data_frame):
         df[col] = df[col].cat.codes
     return df
 
-def standardize(data_frame):
+# Function to standardize numerical variables ( để chuẩn hoá và lưu lại các thông số khi HUẤN LUYỆN MODEL)
+def standardize(data_frame): 
     df = data_frame.copy()
     numerical_cols = df.select_dtypes(include=[np.number]).columns.tolist()
     numerical_cols = [col for col in numerical_cols if col != 'Outcome' and df[col].nunique() > 2]
@@ -27,6 +29,8 @@ def standardize(data_frame):
         stats[col] = {'mean': mean, 'std': std}
     return df, stats
 
+
+# Function to standardize new data using the statistics from training data ( dùng để chquẩn hoá dữ liệu mới dựa trên các thông số đã lưu lại từ quá trình standardize)
 def standardize_with_stats(data_frame, stats):
     df = data_frame.copy()
     for col in stats:
@@ -39,7 +43,11 @@ def standardize_with_stats(data_frame, stats):
                 df[col] = 0
     return df
 
-def inverse_standardize(df, stats, columns=None):
+#Mean = 1/n * sum(xi)
+#Standard Deviation = sqrt(1/n * sum((xi - Mean)^2))
+
+# Function to inverse standardize ( dùng để đưa dữ liệu về dạng ban đầu)
+def inverse_standardize(df, stats, columns=None): 
     df = df.copy()
     if columns is None:
         columns = df.columns.tolist()
@@ -53,11 +61,13 @@ def inverse_standardize(df, stats, columns=None):
                 df[col] = mean
     return df
 
+# Function to preprocess the entire dataset ( kết hợp các bước chuẩn hoá và mã hoá)
 def full_preprocess(data_frame):
     df_encoded = encode(data_frame)
     df_standardized, stats = standardize(df_encoded)
     return df_standardized, stats
 
+# Function to split data into training and testing sets ( chia dữ liệu thành 2 phần train và test)
 def train_test_split(X, y, test_size=0.2, seed=50):
     np.random.seed(seed)
     if isinstance(X, np.ndarray):
@@ -77,6 +87,11 @@ def train_test_split(X, y, test_size=0.2, seed=50):
     elif isinstance(y, pd.Series):
         y_train, y_test = y.iloc[train_idx], y.iloc[test_idx]
     return X_train, X_test, y_train, y_test
+
+#isinstance(obj, type) checks if obj is an instance of type
+# np.random.permutation(n) tạo ra một mảng chứa các số từ 0 đến n-1 được xáo trộn ngẫu nhiên.
+# indices[:split_idx] (80% phần tử đầu tiên) là chỉ số cho tập huấn luyện, còn indices[split_idx:] (20% phần tử còn lại) là chỉ số cho tập kiểm tra.
+
 
 def load_data(data_path):
     data = pd.read_csv(data_path)
@@ -103,7 +118,7 @@ def load_data(data_path):
 
     # Prepare data for Linear Regression model
     X_linear = data[linear_features]
-    y_linear = {target: data[target] for target in targets[:12]}  # First 4 targets for linear regression
+    y_linear = {target: data[target] for target in targets[:12]}  # First 12 targets for linear regression
 
     # Prepare data for Logistic Regression model
     X_logistic = data[logistic_features]

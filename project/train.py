@@ -35,9 +35,7 @@ def train():
     y_logistic_target = y_logistic['Outcome'].values
 
     # Train-test split for Logistic Regression
-    X_train_log, X_test_log, y_train_log, y_test_log = train_test_split(
-        X_logistic_input, y_logistic_target, test_size=0.2, seed=50
-    )
+    X_train_log, X_test_log, y_train_log, y_test_log = train_test_split(X_logistic_input, y_logistic_target, test_size=0.2, seed=50)
 
     # Load models
     models = load_models()

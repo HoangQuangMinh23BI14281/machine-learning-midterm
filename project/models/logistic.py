@@ -11,7 +11,7 @@ class LogisticRegression:
 
     def sigmoid(self, z):
         # Prevent overflow by clipping z
-        z = np.clip(z, -500, 500)
+        z = np.clip(z, -500, 500) # Ensure z is within a reasonable range
         return 1 / (1 + np.exp(-z))
 
     def cost_function(self, X, y, weight):

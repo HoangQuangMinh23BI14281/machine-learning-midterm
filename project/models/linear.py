@@ -43,7 +43,6 @@ class LinearRegression:
         self.weights = np.random.randn(n_features, y.shape[1]) * 0.01
 
         # Print target statistics
-        prev_cost = float('inf')
         patience = 50  # Number of iterations to wait for improvement
         patience_counter = 0
         best_weights = self.weights.copy()
